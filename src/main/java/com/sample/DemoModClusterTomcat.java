@@ -1,5 +1,7 @@
 package com.sample;
 
+import java.util.UUID;
+
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +22,9 @@ import org.jboss.modcluster.container.tomcat.ModClusterListener;
 @RestController
 public class DemoModClusterTomcat extends SpringBootServletInitializer {
 
+	public static UUID uuid;
 	public static void main(String[] args) throws Exception {
+		uuid = UUID.randomUUID();
 		SpringApplication.run(DemoModClusterTomcat.class, args);
 	}
 
@@ -34,7 +38,7 @@ public class DemoModClusterTomcat extends SpringBootServletInitializer {
 	private ModClusterListener modCluster() {
 		ModClusterListener modClusterListener = new ModClusterListener();
 		modClusterListener.setAdvertise(false);
-		modClusterListener.setProxyList("localhost:6666");
+		modClusterListener.setProxyList("httpd-modcluster:6666");
 		modClusterListener.setConnectorPort(8009);
 	
 		return modClusterListener;
@@ -42,7 +46,7 @@ public class DemoModClusterTomcat extends SpringBootServletInitializer {
 
 	@RequestMapping
 	String hello() {
-		return "Welcome to your Spring Boot Application!";
+		return "<h1>Welcome to your Spring Boot Application!</h1>" + "<br>Instance ID: " + uuid;
 	}
 
 	@Bean
