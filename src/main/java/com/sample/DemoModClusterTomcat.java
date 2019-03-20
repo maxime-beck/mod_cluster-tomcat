@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -18,7 +19,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.jboss.modcluster.container.tomcat.ModClusterListener;
 
 @SpringBootApplication
-@ComponentScan
+@ServletComponentScan
 @RestController
 public class DemoModClusterTomcat extends SpringBootServletInitializer {
 
@@ -39,14 +40,10 @@ public class DemoModClusterTomcat extends SpringBootServletInitializer {
 		ModClusterListener modClusterListener = new ModClusterListener();
 		modClusterListener.setAdvertise(false);
 		modClusterListener.setProxyList("httpd-modcluster:6666");
+		//modClusterListener.setProxyList("localhost:6666");
 		modClusterListener.setConnectorPort(8009);
 	
 		return modClusterListener;
-	}
-
-	@RequestMapping
-	String hello() {
-		return "<h1>Welcome to your Spring Boot Application!</h1>" + "<br>Instance ID: " + uuid;
 	}
 
 	@Bean
